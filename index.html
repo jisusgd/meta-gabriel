@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La computadora de Gabriel · Una meta entre todos</title>
+<meta name="description" content="Ayúdame a lograr mi primera computadora. Una meta entre todos, con un sorteo de agradecimiento de $500.000 y $300.000 por la Lotería de Boyacá." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =======================================================================
+     LA COMPUTADORA DE GABRIEL - una meta entre todos
+     Para mantenerla al dia edita el bloque CONFIG al final del archivo:
+       - CONFIG.sheetCsvUrl : URL CSV publicada de Google Sheets (control en vivo)
+       - CONFIG.vendidos    : lista de respaldo si no usas la hoja
+       - CONFIG.whatsapp / CONFIG.nequi / CONFIG.titular : contacto y pago
+     ======================================================================= */
+  :root{
+    --sky-top:#1668AE; --sky-mid:#3F9BD6; --sky-low:#A9DDF6;
+    --cloud:#FFFFFF; --cloud-edge:#DCEFFB;
+    --ink:#163A5C; --body:#3C5C74;
+    --orange:#F5811F; --orange-d:#DC6E0C;
+    --gold:#FFC233; --gold-d:#C8881A;
+    --green:#58B24A; --green-d:#3F8F36; --green-soft:#E7F5E2;
+    --sold:#D9E6F0; --sold-ink:#8398AB;
+    --paper:#EFF8FE; --line:#D9EAF6; --surface:#FFFFFF;
+    --radius:18px; --radius-sm:12px; --maxw:680px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--paper);color:var(--body);
+    font-family:"Nunito",system-ui,sans-serif;font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:"Baloo 2",system-ui,sans-serif;font-weight:800;line-height:1.05;margin:0;color:var(--ink);}
+  a{color:var(--orange-d);}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  .eyebrow{font-family:"Baloo 2";font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin:0 0 12px;}
+  section{padding:48px 0;}
+  .sky-tint{background:linear-gradient(180deg,#EAF6FE,#F6FBFF);}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 48%,var(--sky-low) 100%);
+    padding:18px 0 0;overflow:hidden;}
+  .nav{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand .mk{width:40px;height:40px;border-radius:12px;background:#fff;color:var(--sky-top);
+    display:flex;align-items:center;justify-content:center;font-family:"Baloo 2";font-weight:800;font-size:22px;box-shadow:0 4px 0 rgba(8,45,80,.18);}
+  .brand .nm{color:#fff;font-family:"Baloo 2";font-weight:700;font-size:16px;text-shadow:0 1px 4px rgba(8,45,80,.3);}
+  .nav .links{display:flex;gap:18px;}
+  .nav .links a{color:#EAF6FF;text-decoration:none;font-weight:700;font-size:14px;text-shadow:0 1px 3px rgba(8,45,80,.35);}
+  .nav .links a:hover{color:#fff;}
+  .cloud-deco{position:absolute;pointer-events:none;z-index:1;}
+  .sun{position:absolute;top:26px;right:-30px;width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,224,138,.85),rgba(255,224,138,0) 68%);z-index:1;pointer-events:none;}
+  .hero-inner{position:relative;z-index:4;text-align:center;padding:24px 22px 0;max-width:var(--maxw);margin:0 auto;}
+  .hero h1{color:#fff;font-size:clamp(38px,10vw,64px);letter-spacing:.01em;
+    text-shadow:0 3px 0 rgba(8,45,80,.18),0 10px 26px rgba(8,45,80,.28);}
+  .hero .sub{font-family:"Caveat",cursive;font-weight:700;color:#EAF7FF;font-size:clamp(24px,6vw,34px);
+    margin:6px 0 0;text-shadow:0 2px 10px rgba(8,45,80,.3);}
+  .balloon{display:block;margin:8px auto -4px;width:clamp(120px,32vw,160px);height:auto;
+    filter:drop-shadow(0 14px 18px rgba(8,45,80,.22));animation:bob 5s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg);}50%{transform:translateY(-12px) rotate(1.5deg);}}
+
+  .cloud-card{position:relative;z-index:4;background:#fff;border-radius:26px;max-width:520px;margin:14px auto 0;
+    padding:18px;box-shadow:0 16px 40px rgba(8,45,80,.18);text-align:left;}
+  .cloud-divider{display:block;width:100%;height:70px;margin-top:30px;position:relative;z-index:3;}
+
+  /* video vertical */
+  .videowrap{position:relative;width:100%;max-width:300px;margin:0 auto;aspect-ratio:9/16;
+    border-radius:var(--radius);overflow:hidden;background:#0D2436;box-shadow:0 10px 30px rgba(8,45,80,.18);}
+  .videowrap video{width:100%;height:100%;object-fit:contain;display:block;background:#0D2436;}
+  .videocap{text-align:center;font-size:13px;color:var(--body);margin:10px 0 0;}
+
+  /* mensaje de Gabriel */
+  .gmsg{margin:16px 0 0;font-size:16.5px;color:var(--ink);line-height:1.7;}
+  .gmsg .who{display:block;margin-top:10px;font-family:"Caveat",cursive;font-weight:700;font-size:22px;color:var(--green-d);}
+  .cloud-card .cta{display:flex;justify-content:center;margin-top:18px;}
+
+  .btn{appearance:none;border:0;cursor:pointer;font-family:"Baloo 2";font-weight:700;font-size:17px;
+    padding:14px 24px;border-radius:14px;display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+    transition:transform .12s ease,box-shadow .12s ease,background .15s ease;}
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--orange);color:#fff;box-shadow:0 5px 0 var(--orange-d);}
+  .btn-primary:hover{background:#ff8e2e;}
+  .btn-ghost{background:#fff;color:var(--sky-top);box-shadow:0 0 0 2px var(--line) inset;}
+  .btn-ghost:hover{background:var(--paper);}
+  .btn-wa{background:var(--green);color:#fff;box-shadow:0 5px 0 var(--green-d);}
+  .btn-wa:hover{background:#62c052;}
+
+  /* secciones generales */
+  h2.sec{font-size:clamp(28px,7vw,38px);text-align:center;}
+  .sec-lead{text-align:center;color:var(--body);margin:10px auto 0;max-width:32em;}
+  .sec-lead.first{color:var(--ink);font-size:18px;}
+
+  /* caja crowdfunding */
+  .vaca{margin:22px auto 0;max-width:34em;background:#FFF7E6;border:1px solid #F4E2B4;border-radius:var(--radius);
+    padding:18px 20px;color:#6a4f12;font-size:15.5px;line-height:1.6;}
+  .vaca b{color:#8a5a00;}
+
+  /* countdown */
+  .count{background:linear-gradient(180deg,#1F73B6,#2E86C6);border-radius:var(--radius);padding:22px;color:#fff;text-align:center;box-shadow:0 12px 30px rgba(22,58,92,.18);}
+  .count .clbl{font-family:"Baloo 2";font-weight:700;font-size:15px;letter-spacing:.04em;color:#D6ECFB;}
+  .count .units{display:flex;gap:10px;margin-top:14px;justify-content:center;}
+  .count .u{flex:1;max-width:96px;background:rgba(255,255,255,.14);border-radius:14px;padding:12px 4px;}
+  .count .n{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:clamp(26px,7vw,36px);line-height:1;}
+  .count .s{font-size:11px;color:#D6ECFB;letter-spacing:.06em;text-transform:uppercase;margin-top:6px;}
+  .count .date{margin-top:14px;font-size:15px;color:#EAF6FF;}
+  .count .date b{color:var(--gold);}
+
+  /* progress */
+  .prog-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .prog-big{font-family:"Baloo 2";font-weight:800;font-size:clamp(34px,8vw,48px);line-height:1;color:var(--ink);}
+  .prog-big span{color:var(--body);font-size:.42em;font-weight:700;}
+  .prog-left{font-family:"Baloo 2";font-weight:700;font-size:16px;color:var(--green-d);}
+  .bar{height:18px;background:#E4EFF8;border-radius:20px;overflow:hidden;margin-top:16px;border:1px solid var(--line);}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#74c765);border-radius:20px;transition:width 1.1s cubic-bezier(.2,.7,.2,1);}
+  .prog-note{margin:12px 0 0;font-size:15px;color:var(--body);}
+
+  /* prizes */
+  .prizes{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .prize{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 16px;text-align:center;box-shadow:0 8px 24px rgba(22,58,92,.06);}
+  .prize.first{border:2px solid var(--gold);background:linear-gradient(180deg,#FFF7E2,#FFFDF6);}
+  .prize .ribbon{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#6a4a05;
+    font-family:"Baloo 2";font-weight:700;font-size:12px;padding:4px 12px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 0 var(--gold-d);}
+  .prize .rank{font-family:"Baloo 2";font-weight:700;font-size:14px;color:var(--body);}
+  .prize.first .rank{color:#9A6A06;}
+  .prize .amt{font-family:"Baloo 2";font-weight:800;font-size:clamp(26px,7vw,36px);color:var(--ink);margin-top:4px;}
+  .prize .psub{font-size:13px;color:var(--body);margin-top:2px;}
+  .ticketval{margin:18px 0 0;text-align:center;font-size:17px;color:var(--body);}
+  .ticketval b{color:var(--ink);font-family:"Baloo 2";font-weight:700;}
+  .one-winner{margin:6px 0 0;text-align:center;font-size:14px;color:var(--sold-ink);}
+
+  /* board */
+  .legend{display:flex;gap:18px;justify-content:center;margin:14px 0 18px;font-size:14px;font-weight:700;color:var(--body);}
+  .legend i{width:15px;height:15px;border-radius:5px;display:inline-block;vertical-align:-2px;margin-right:6px;}
+  .legend .av{background:var(--green);}
+  .legend .re{background:#F4B53F;}
+  .legend .so{background:var(--sold);border:1px solid #C2D6E6;}
+  .board{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;}
+  .cell{aspect-ratio:1;border:0;border-radius:11px;cursor:pointer;font-family:"Nunito";font-weight:800;
+    font-size:clamp(11px,3.1vw,16px);display:flex;align-items:center;justify-content:center;
+    background:var(--green);color:#fff;text-decoration:none;box-shadow:0 3px 0 var(--green-d);
+    transition:transform .1s ease,box-shadow .1s ease,background .15s ease;}
+  .cell:hover{background:#62c052;transform:translateY(-2px);box-shadow:0 5px 0 var(--green-d);}
+  .cell:active{transform:translateY(2px);box-shadow:0 1px 0 var(--green-d);}
+  .cell:focus-visible{outline:3px solid var(--orange);outline-offset:2px;}
+  .cell.sold{background:var(--sold);color:var(--sold-ink);cursor:not-allowed;text-decoration:line-through;box-shadow:none;}
+  .cell.sold:hover{transform:none;background:var(--sold);box-shadow:none;}
+  .cell.res{background:#F4B53F;color:#6a4a05;cursor:not-allowed;box-shadow:none;}
+  .cell.res:hover{transform:none;background:#F4B53F;box-shadow:none;}
+  .board-foot{margin:16px 0 0;font-family:"Baloo 2";font-weight:600;font-size:15px;color:var(--body);text-align:center;}
+
+  /* steps + pay */
+  .steps{display:grid;gap:12px;}
+  .step{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px 18px;box-shadow:0 6px 18px rgba(22,58,92,.05);}
+  .step .sn{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--orange);color:#fff;
+    font-family:"Baloo 2";font-weight:700;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 0 var(--orange-d);}
+  .step .sx{font-size:16px;}
+  .step .sx b{color:var(--ink);font-weight:800;}
+  .pay{margin:18px 0 0;background:linear-gradient(180deg,#7A39C9,#6B2FB6);color:#fff;border-radius:var(--radius);padding:22px;box-shadow:0 12px 30px rgba(60,30,110,.22);}
+  .pay .ph{font-family:"Baloo 2";font-weight:700;font-size:14px;letter-spacing:.04em;color:#E6D9FB;}
+  .pay .pn{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:clamp(22px,6vw,30px);margin:6px 0 2px;}
+  .pay .pt{font-size:15px;color:#EFE8FB;}
+  .ph-mark{background:var(--gold);color:#5a3d00;font-weight:700;padding:1px 8px;border-radius:6px;font-size:.92em;}
+  .pay .pcash{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.22);font-size:14px;color:#EFE8FB;}
+
+  /* why / chips */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:22px;padding:8px 16px;font-weight:700;font-size:14px;color:var(--body);box-shadow:0 4px 12px rgba(22,58,92,.05);}
+
+  /* trust */
+  .trust ul{list-style:none;margin:16px auto 0;padding:0;max-width:34em;display:grid;gap:12px;}
+  .trust li{display:flex;gap:12px;align-items:flex-start;font-size:16px;color:var(--ink);}
+  .trust li .ic{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;}
+  .trust li b{color:var(--ink);font-weight:800;}
+  .trust a{color:var(--orange-d);font-weight:700;}
+  .note-confirm{margin:16px auto 0;max-width:34em;font-size:13px;color:#8a6b1f;background:#FFF5DA;border:1px solid #F2E2AE;border-radius:12px;padding:10px 14px;}
+  .ex-draw{margin:16px auto 0;max-width:34em;font-size:15px;color:var(--body);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:0 4px 12px rgba(22,58,92,.05);}
+  .ex-draw b{color:var(--ink);}
+
+  /* share */
+  .share{text-align:center;}
+  .share p{color:var(--body);margin:0 auto 18px;max-width:30em;}
+
+  /* faq */
+  details{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:10px;overflow:hidden;box-shadow:0 4px 14px rgba(22,58,92,.04);}
+  summary{cursor:pointer;list-style:none;padding:16px 18px;font-family:"Baloo 2";font-weight:600;font-size:16px;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  summary::-webkit-details-marker{display:none;}
+  summary .pl{color:var(--orange);font-weight:800;transition:transform .2s ease;}
+  details[open] summary .pl{transform:rotate(45deg);}
+  details .ans{padding:0 18px 16px;color:var(--body);font-size:16px;}
+
+  /* muro de impulsores */
+  .muro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:24px;}
+  .imp{position:relative;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:0 4px 12px rgba(22,58,92,.05);}
+  .imp .av{width:38px;height:38px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-family:"Baloo 2";font-weight:700;font-size:15px;color:#fff;}
+  .imp .nm{font-family:"Baloo 2";font-weight:700;font-size:15px;color:var(--ink);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .imp .meta{font-size:12.5px;color:var(--body);}
+  .imp .crown{position:absolute;top:-9px;left:26px;line-height:0;transform:rotate(8deg);}
+  .imp-count{display:block;margin-top:6px;font-family:"Baloo 2";font-weight:700;color:var(--green-d);}
+  .muro-empty{text-align:center;color:var(--body);background:var(--green-soft);border:1px solid #CDE9C4;border-radius:var(--radius);padding:22px;margin-top:20px;font-weight:600;}
+
+  /* footer */
+  footer{position:relative;background:linear-gradient(180deg,var(--sky-low),#8FD0F0);color:#fff;padding:70px 0 30px;text-align:center;margin-top:46px;}
+  .grass{position:absolute;top:-1px;left:0;width:100%;height:60px;transform:translateY(-100%);display:block;}
+  .foot-balloon{position:absolute;top:16px;right:6%;width:clamp(58px,16vw,84px);height:auto;z-index:0;pointer-events:none;
+    filter:drop-shadow(0 8px 12px rgba(8,45,80,.2));animation:bob 5s ease-in-out infinite;}
+  footer .fmark, footer p{position:relative;z-index:1;}
+  footer .fmark{font-family:"Baloo 2";font-weight:800;font-size:24px;color:#fff;text-shadow:0 2px 6px rgba(8,45,80,.25);}
+  footer p{font-size:14px;color:#EAF7FF;margin:8px 0 0;}
+
+  @media (max-width:430px){ .nav .links{display:none;} .count .u{max-width:none;} }
+  @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important;scroll-behavior:auto!important;} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="sun" aria-hidden="true"></div>
+  <svg class="cloud-deco" style="top:90px;left:-30px;width:150px;opacity:.9;" viewBox="0 0 120 60" aria-hidden="true"><g fill="#fff"><circle cx="35" cy="38" r="20"/><circle cx="60" cy="28" r="26"/><circle cx="88" cy="38" r="20"/><ellipse cx="60" cy="48" rx="50" ry="14"/></g></svg>
+  <svg class="cloud-deco" style="top:60px;right:10px;width:110px;opacity:.8;" viewBox="0 0 120 60" aria-hidden="true"><g fill="#fff"><circle cx="35" cy="38" r="18"/><circle cx="62" cy="30" r="24"/><circle cx="90" cy="40" r="16"/><ellipse cx="62" cy="48" rx="48" ry="12"/></g></svg>
+
+  <div class="wrap nav">
+    <div class="brand"><div class="mk">G</div><div class="nm">La meta de Gabriel</div></div>
+    <nav class="links">
+      <a href="#apoyar">Cómo apoyar</a>
+      <a href="#tablero">Números</a>
+      <a href="#premios">Premios</a>
+      <a href="#compartir">Compartir</a>
+    </nav>
+  </div>
+
+  <div class="hero-inner">
+    <p class="eyebrow" style="color:#FFD98A;">Una meta entre todos · 2026</p>
+    <h1>La computadora<br/>de Gabriel</h1>
+    <p class="sub">un sueño que hago realidad con tu ayuda</p>
+
+    <div class="cloud-card">
+      <div class="videowrap">
+        <video id="videoGabriel" controls playsinline webkit-playsinline preload="metadata" poster="">
+          <source src="video-gabriel.MP4" type="video/mp4" />
+          Tu navegador no puede reproducir el video. <a href="video-gabriel.MP4">Descárgalo aquí</a>.
+        </video>
+      </div>
+      <p class="videocap">Mira mi video y conoce mi sueño</p>
+      <p class="gmsg">¡Hola! Soy Gabriel, tengo 14 años. Mi sueño es tener mi primera computadora para estudiar, crear y aprender a programar. Me he esforzado y he ahorrado, y ahora quiero lograrlo con la ayuda de personas como tú. No te pido un regalo: te invito a sumarte a mi meta. Como agradecimiento, quienes me apoyan entran a un sorteo con dos premios en efectivo. Cada número me acerca un poquito más a mi sueño. ¿Te sumas?
+        <span class="who">— Gabriel</span>
+      </p>
+      <div class="cta"><a class="btn btn-primary" href="#apoyar">Quiero sumarme</a></div>
+    </div>
+  </div>
+
+  <svg class="cloud-divider" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#EFF8FE" d="M0,100 L0,58 C80,58 80,18 160,18 C240,18 240,58 320,58 C400,58 400,22 480,22 C560,22 560,58 640,58 C720,58 720,12 800,12 C880,12 880,58 960,58 C1040,58 1040,20 1120,20 C1200,20 1200,58 1280,58 C1360,58 1360,28 1440,28 L1440,100 Z"/>
+  </svg>
+</header>
+
+<section class="wrap" id="apoyar" style="padding-top:24px;">
+  <p class="eyebrow" style="text-align:center;">¿Cómo puedes apoyar?</p>
+  <h2 class="sec">Súmate a mi meta</h2>
+  <p class="sec-lead first">Es muy sencillo: eliges un número y aportas <b>$30.000</b>. Con eso impulsas mi meta y, para agradecerte, entras al sorteo de <b>$500.000</b> y <b>$300.000</b>, que se juega con la Lotería de Boyacá. Tu aporte ayuda… y además puede tener premio.</p>
+  <div class="vaca">
+    <b>¿Qué es esto exactamente?</b> Una meta entre todos: muchas personas aportan un poquito para lograr algo grande. Es una financiación colectiva —un <b>crowdfunding</b>—, o como decimos por aquí, una <b>“vaca”</b>… pero con premios.
+  </div>
+  <div style="text-align:center;margin-top:24px;"><a class="btn btn-primary" href="#tablero">Elige tu número</a></div>
+</section>
+
+<section class="wrap" style="padding-top:6px;">
+  <div class="count" id="count">
+    <div class="clbl">Faltan para el sorteo</div>
+    <div class="units">
+      <div class="u"><div class="n" id="cd-d">--</div><div class="s">días</div></div>
+      <div class="u"><div class="n" id="cd-h">--</div><div class="s">horas</div></div>
+      <div class="u"><div class="n" id="cd-m">--</div><div class="s">min</div></div>
+      <div class="u"><div class="n" id="cd-s">--</div><div class="s">seg</div></div>
+    </div>
+    <div class="date">Sábado <b>25 de julio de 2026</b> · Lotería de Boyacá</div>
+  </div>
+</section>
+
+<section class="wrap sky-tint" style="border-radius:var(--radius);">
+  <div style="padding:8px 0;">
+    <p class="eyebrow" style="text-align:center;">Vamos así</p>
+    <div class="prog-top">
+      <div class="prog-big"><span id="p-sold">0</span> <span>de 100 números</span></div>
+      <div class="prog-left" id="p-left">Quedan 100</div>
+    </div>
+    <div class="bar"><i id="p-bar"></i></div>
+    <p class="prog-note">Cada número que se suma me acerca a mi computadora.</p>
+  </div>
+</section>
+
+<section class="wrap" id="premios">
+  <p class="eyebrow" style="text-align:center;">Tu apoyo tiene premio</p>
+  <h2 class="sec">Dos premios en efectivo</h2>
+  <p class="sec-lead">Para agradecer a quienes me apoyan, sorteo dos premios entre todos los números vendidos.</p>
+  <div class="prizes" style="margin-top:26px;">
+    <div class="prize first">
+      <div class="ribbon">Premio mayor</div>
+      <div class="rank">1.er premio</div>
+      <div class="amt">$500.000</div>
+      <div class="psub">en efectivo</div>
+    </div>
+    <div class="prize">
+      <div class="rank">2.º premio</div>
+      <div class="amt">$300.000</div>
+      <div class="psub">en efectivo</div>
+    </div>
+  </div>
+  <p class="ticketval">Valor por número: <b>$30.000</b></p>
+  <p class="one-winner">Un solo ganador por número.</p>
+</section>
+
+<section class="wrap" id="tablero">
+  <p class="eyebrow" style="text-align:center;">Elige tu número y súmate</p>
+  <h2 class="sec">El tablero de la meta</h2>
+  <p class="sec-lead">Toca un número disponible y te abro WhatsApp con el mensaje listo para apartarlo.</p>
+  <div class="legend">
+    <span><i class="av"></i>Disponible</span>
+    <span><i class="re"></i>Reservado</span>
+    <span><i class="so"></i>Vendido</span>
+  </div>
+  <div class="board" id="board" role="group" aria-label="Tablero de números del 00 al 99"></div>
+  <p class="board-foot" id="board-foot">Cargando tablero...</p>
+</section>
+
+<section class="wrap sky-tint" id="sumarte" style="border-radius:var(--radius);">
+  <div style="padding:8px 0;">
+    <p class="eyebrow" style="text-align:center;">Cómo sumarte</p>
+    <h2 class="sec">Apartar tu número en 4 pasos</h2>
+    <div class="steps" style="margin-top:24px;">
+      <div class="step"><div class="sn">1</div><div class="sx">Eliges tu número en el <b>tablero</b> de arriba.</div></div>
+      <div class="step"><div class="sn">2</div><div class="sx">Aportas <b>$30.000</b> por Nequi o en efectivo.</div></div>
+      <div class="step"><div class="sn">3</div><div class="sx">Me envías el <b>comprobante</b> por WhatsApp.</div></div>
+      <div class="step"><div class="sn">4</div><div class="sx">Te confirmo y tu número queda <b>apartado</b>.</div></div>
+    </div>
+    <div class="pay">
+      <div class="ph">PAGA POR NEQUI</div>
+      <div class="pn" id="pay-nequi">322 973 8258</div>
+      <div class="pt">A nombre de <span class="ph-mark" id="pay-titular">Gabriel</span></div>
+      <div class="pcash">También puedes aportar en <b>efectivo</b>: lo coordinamos por WhatsApp y aparto tu número.</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" style="text-align:center;">
+  <p class="eyebrow" style="text-align:center;">Por qué lo hago</p>
+  <h2 class="sec">Más que una computadora</h2>
+  <p class="sec-lead">Este es mi primer proyecto: estoy aprendiendo a planear, comunicar, organizar y perseverar para alcanzar una meta de verdad. Aunque no ganes el premio, tu apoyo hace parte de algo real y de una lección que me quedará para toda la vida.</p>
+  <div class="chips">
+    <span class="chip">Emprendimiento</span>
+    <span class="chip">Comunicación</span>
+    <span class="chip">Organización</span>
+    <span class="chip">Perseverancia</span>
+  </div>
+</section>
+
+<section class="wrap sky-tint" style="border-radius:var(--radius);text-align:center;">
+  <div style="padding:8px 0;">
+    <p class="eyebrow" style="text-align:center;">Confianza y transparencia</p>
+    <h2 class="sec">Cómo se elige al ganador</h2>
+    <ul class="trust" style="text-align:left;">
+      <li><span class="ic" aria-hidden="true">+</span><span>El sorteo se define con la <b><a href="https://loteriadeboyaca.gov.co/" target="_blank" rel="noopener">Lotería de Boyacá</a> del sábado 25 de julio de 2026</b>.</span></li>
+      <li><span class="ic" aria-hidden="true">+</span><span><b>1.er premio:</b> las <b>dos últimas</b> cifras del número de la Lotería de Boyacá.</span></li>
+      <li><span class="ic" aria-hidden="true">+</span><span><b>2.º premio:</b> las <b>dos primeras</b> cifras del número de la Lotería de Boyacá.</span></li>
+      <li><span class="ic" aria-hidden="true">+</span><span>Un solo ganador por premio. Resultado <b>público y verificable</b>.</span></li>
+      <li><span class="ic" aria-hidden="true">+</span><span>Organizado por <b>Gabriel y su familia</b>, con manejo transparente de cada aporte.</span></li>
+    </ul>
+    <p class="ex-draw">Ejemplo: si el número de la lotería es <b>4430</b>, el 1.er premio sería para el número <b>30</b> y el 2.º premio para el <b>44</b>.</p>
+  </div>
+</section>
+
+<section class="wrap share" id="compartir">
+  <p class="eyebrow" style="text-align:center;">Ayúdame a llegar</p>
+  <h2 class="sec">Entre más personas, más cerca la meta</h2>
+  <p>Compartir también es ayudar. Cada persona que conoce mi meta es un paso más hacia mi computadora.</p>
+  <a class="btn btn-wa" id="share-btn" href="https://wa.me/?text=Te%20invito%20a%20sumarte%20a%20la%20meta%20de%20Gabriel.%20Elige%20tu%20numero." target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.16c-.24.68-1.42 1.31-1.96 1.35-.5.07-.96.25-3.23-.67-2.72-1.07-4.45-3.84-4.59-4.02-.13-.18-1.1-1.46-1.1-2.79 0-1.33.7-1.98.95-2.25.24-.27.53-.34.71-.34.18 0 .36 0 .51.01.16.01.38-.06.6.46.24.56.78 1.92.85 2.06.07.13.12.29.02.47-.09.18-.14.29-.28.45-.14.16-.29.36-.42.48-.14.13-.28.27-.12.54.16.27.71 1.18 1.53 1.91 1.05.94 1.94 1.23 2.21 1.36.27.13.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.27.13.45.2.51.31.07.11.07.65-.17 1.33z"/></svg>
+    Compartir por WhatsApp
+  </a>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow" style="text-align:center;">Preguntas frecuentes</p>
+  <h2 class="sec" style="margin-bottom:22px;">Te resuelvo tus dudas</h2>
+  <details><summary>¿Puedo apoyar con más de un número?<span class="pl">+</span></summary><div class="ans">Claro, puedes apartar todos los que quieras. Mientras más números, más me ayudas… y más oportunidades de ganar.</div></details>
+  <details><summary>¿Qué pasa si gano?<span class="pl">+</span></summary><div class="ans">Te contacto por WhatsApp apenas salga el resultado de la Lotería de Boyacá y coordinamos la entrega del premio en efectivo.</div></details>
+  <details><summary>¿Cuándo y cómo es el sorteo?<span class="pl">+</span></summary><div class="ans">El sábado 25 de julio de 2026, con la Lotería de Boyacá. El 1.er premio es para las dos últimas cifras del número y el 2.º premio para las dos primeras. Es un resultado público que cualquiera puede verificar.</div></details>
+  <details><summary>¿Cómo sé que mi número quedó apartado?<span class="pl">+</span></summary><div class="ans">Cuando recibo tu comprobante, te confirmo por WhatsApp y marco tu número como apartado en este tablero.</div></details>
+  <details><summary>¿Es seguro aportar por Nequi?<span class="pl">+</span></summary><div class="ans">Sí. Aportas directamente a mi Nequi y siempre te queda el comprobante de la transacción.</div></details>
+</section>
+
+<section class="wrap sky-tint" id="comunidad" style="border-radius:var(--radius);">
+  <div style="padding:8px 0;">
+    <p class="eyebrow" style="text-align:center;">Comunidad</p>
+    <h2 class="sec">Gracias a quienes me apoyan</h2>
+    <p class="sec-lead">Estas son las personas que ya confirmaron su aporte y me ayudan a subir.<span class="imp-count" id="imp-count"></span></p>
+    <div class="muro-grid" id="muro"></div>
+    <p class="muro-empty" id="muro-empty" style="display:none;">Aún no hay nadie en el muro. ¡Sé la primera persona en sumarte!</p>
+  </div>
+</section>
+
+<footer>
+  <svg class="grass" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#3F8F36" d="M0,90 L0,52 Q40,18 80,52 Q120,16 160,52 Q200,20 240,52 Q280,14 320,52 Q360,20 400,52 Q440,16 480,52 Q520,20 560,52 Q600,14 640,52 Q680,20 720,52 Q760,16 800,52 Q840,20 880,52 Q920,14 960,52 Q1000,20 1040,52 Q1080,16 1120,52 Q1160,20 1200,52 Q1240,14 1280,52 Q1320,20 1360,52 Q1400,16 1440,52 L1440,90 Z"/>
+    <path fill="#58B24A" d="M0,90 L0,64 Q30,40 60,64 Q90,38 120,64 Q150,42 180,64 Q210,38 240,64 Q270,42 300,64 Q330,38 360,64 Q390,42 420,64 Q450,38 480,64 Q510,42 540,64 Q570,38 600,64 Q630,42 660,64 Q690,38 720,64 Q750,42 780,64 Q810,38 840,64 Q870,42 900,64 Q930,38 960,64 Q990,42 1020,64 Q1050,38 1080,64 Q1110,42 1140,64 Q1170,38 1200,64 Q1230,42 1260,64 Q1290,38 1320,64 Q1350,42 1380,64 Q1410,38 1440,64 L1440,90 Z"/>
+  </svg>
+  <div class="fmark">La computadora de Gabriel</div>
+  <svg class="foot-balloon" viewBox="0 0 200 270" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><clipPath id="bcf"><path d="M100,16 C150,16 172,60 172,106 C172,152 140,182 100,202 C60,182 28,152 28,106 C28,60 50,16 100,16 Z"/></clipPath></defs>
+    <line x1="60" y1="2" x2="60" y2="20" stroke="#DC6E0C" stroke-width="3"/>
+    <path d="M60,3 L82,9 L60,16 Z" fill="#FFC233"/>
+    <g clip-path="url(#bcf)">
+      <rect x="28" y="10" width="24" height="200" fill="#F5811F"/>
+      <rect x="52" y="10" width="24" height="200" fill="#FFE0B0"/>
+      <rect x="76" y="10" width="24" height="200" fill="#F5811F"/>
+      <rect x="100" y="10" width="24" height="200" fill="#FFE0B0"/>
+      <rect x="124" y="10" width="24" height="200" fill="#F5811F"/>
+      <rect x="148" y="10" width="24" height="200" fill="#FFE0B0"/>
+      <ellipse cx="74" cy="62" rx="26" ry="40" fill="#fff" opacity=".22"/>
+    </g>
+    <path d="M100,16 C150,16 172,60 172,106 C172,152 140,182 100,202 C60,182 28,152 28,106 C28,60 50,16 100,16 Z" fill="none" stroke="#DC6E0C" stroke-width="4"/>
+    <path d="M86,200 L114,200 L110,216 L90,216 Z" fill="#C85E0A"/>
+    <line x1="90" y1="216" x2="92" y2="238" stroke="#8A5326" stroke-width="2.5"/>
+    <line x1="110" y1="216" x2="108" y2="238" stroke="#8A5326" stroke-width="2.5"/>
+    <rect x="86" y="236" width="28" height="22" rx="5" fill="#9A5B2A"/>
+    <rect x="86" y="236" width="28" height="7" rx="3" fill="#7E481F"/>
+  </svg>
+  <p>Hecho con esfuerzo por mí y mi familia · 2026</p>
+  <p>Gracias por ayudarme a lograr mi sueño.</p>
+</footer>
+
+<script>
+/* =========================================================================
+   CONFIG - edita aqui para mantener la pagina al dia
+   ========================================================================= */
+var CONFIG = {
+  // ---- CONTROL EN VIVO CON GOOGLE SHEETS (recomendado) ----
+  // Pega aqui la URL CSV publicada de tu hoja (ver instrucciones).
+  // Si la dejas vacia, se usa la lista "vendidos" de abajo como respaldo.
+  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtRePM3podX5dNTBdo17vvRAi_0J6ifAsa5CEbQ0lL5-TmtWzX1BePrnf6YZMPsXUc15RSqOX2CNe2/pub?gid=1807669450&single=true&output=csv",
+
+  // ---- RESPALDO MANUAL ----
+  // Si no usas Google Sheets, marca aqui los numeros ya apartados (0 a 99).
+  // Ejemplo: vendidos: [0, 5, 23, 47, 88]
+  vendidos: [],
+
+  // ---- CONTACTO Y PAGO ----
+  whatsapp: "573229738258",      // solo digitos, con indicativo 57
+  nequi: "322 973 8258",
+  titular: "Gabriel",
+
+  // ---- SORTEO ----
+  sorteo: "2026-07-25T22:42:00-05:00",
+
+  // ---- URL publica de esta pagina (para el boton compartir) ----
+  siteUrl: "https://edgar2davila.github.io/Rifa-Gabriel/"
+};
+
+function buildBoard(stateMap){
+  var board = document.getElementById('board');
+  var foot = document.getElementById('board-foot');
+  var waBase = "https://wa.me/" + CONFIG.whatsapp;
+  if (!board) return;
+  board.innerHTML = "";
+
+  var taken = 0;
+  for (var i = 0; i < 100; i++){
+    var nn = (i < 10 ? '0' : '') + i;
+    var est = stateMap[i] || 'disponible';
+    if (est === 'disponible'){
+      var a = document.createElement('a');
+      a.className = 'cell';
+      a.textContent = nn;
+      a.setAttribute('aria-label', 'Numero ' + nn + ', disponible. Apartar por WhatsApp.');
+      var msg = 'Hola Gabriel! Quiero apartar el numero ' + nn + ' y sumarme a tu meta.';
+      a.href = waBase + '?text=' + encodeURIComponent(msg);
+      a.target = '_blank';
+      a.rel = 'noopener';
+      board.appendChild(a);
+    } else {
+      taken++;
+      var span = document.createElement('span');
+      span.className = 'cell ' + (est === 'reservado' ? 'res' : 'sold');
+      span.textContent = nn;
+      span.setAttribute('aria-label', 'Numero ' + nn + ', ' + est);
+      board.appendChild(span);
+    }
+  }
+
+  var available = 100 - taken;
+  if (foot){
+    foot.textContent = available === 0
+      ? 'Ya no queda ningun numero disponible.'
+      : 'Quedan ' + available + ' de 100 disponibles.';
+  }
+  var pSold = document.getElementById('p-sold');
+  var pLeft = document.getElementById('p-left');
+  var pBar = document.getElementById('p-bar');
+  if (pSold) pSold.textContent = taken;
+  if (pLeft) pLeft.textContent = available === 0 ? 'Completo' : 'Quedan ' + available;
+  if (pBar) setTimeout(function(){ pBar.style.width = taken + '%'; }, 120);
+}
+
+function normEstado(raw){
+  var e = deacc((raw || '').trim().toLowerCase());
+  if (e === '' || e === 'disponible') return 'disponible';
+  if (e.indexOf('vend') === 0 || e.indexOf('pag') === 0) return 'vendido';
+  if (e.indexOf('reserv') === 0 || e.indexOf('apart') === 0) return 'reservado';
+  return 'reservado';
+}
+
+var AVPAL = ['#58B24A','#3F9BD6','#F5811F','#7A39C9','#1F73B6','#E0922A','#2BA17C','#D8602F'];
+function hashName(s){ var h = 0; for (var i = 0; i < s.length; i++){ h = (h * 31 + s.charCodeAt(i)) % 100000; } return h; }
+function escapeHtml(s){ return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function pad2(n){ return (n < 10 ? '0' : '') + n; }
+function initials(name){
+  var parts = name.split(/\s+/), out = '';
+  for (var i = 0; i < parts.length && out.length < 2; i++){ if (parts[i]) out += parts[i].charAt(0); }
+  return out.toUpperCase();
+}
+
+function buildMuro(ventas){
+  var grid = document.getElementById('muro');
+  var empty = document.getElementById('muro-empty');
+  var countEl = document.getElementById('imp-count');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  var named = {}, order = [], anon = [];
+  for (var i = 0; i < ventas.length; i++){
+    var name = (ventas[i].comprador || '').trim();
+    var key = deacc(name.toLowerCase());
+    if (name === '' || key === 'anonimo'){ anon.push(ventas[i].num); }
+    else {
+      if (!named[key]){ named[key] = { name: name, nums: [] }; order.push(key); }
+      named[key].nums.push(ventas[i].num);
+    }
+  }
+  var fichas = [];
+  for (var o = 0; o < order.length; o++){
+    var g = named[order[o]];
+    g.nums.sort(function(a,b){ return a - b; });
+    fichas.push({ name: g.name, nums: g.nums, anon: false });
+  }
+  fichas.sort(function(a,b){
+    if (b.nums.length !== a.nums.length) return b.nums.length - a.nums.length;
+    return a.name.localeCompare(b.name);
+  });
+  for (var z = 0; z < anon.length; z++){ fichas.push({ name: 'An\u00f3nimo', nums: [anon[z]], anon: true }); }
+
+  if (fichas.length === 0){
+    grid.style.display = 'none';
+    if (empty) empty.style.display = 'block';
+    if (countEl) countEl.textContent = '';
+    return;
+  }
+  grid.style.display = '';
+  if (empty) empty.style.display = 'none';
+  if (countEl) countEl.textContent = 'Ya somos ' + fichas.length + (fichas.length === 1 ? ' persona' : ' personas') + '.';
+
+  var crownSvg = '<span class="crown" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="#F2A516" stroke="#C8881A" stroke-width="1.2" stroke-linejoin="round"><path d="M3 8l4.5 3.5L12 5l4.5 6.5L21 8l-1.8 10.5H4.8z"/></svg></span>';
+  for (var f = 0; f < fichas.length; f++){
+    var fi = fichas[f];
+    var multi = fi.nums.length > 1;
+    var meta = multi ? (fi.nums.length + ' n\u00fameros') : ('n\u00famero ' + pad2(fi.nums[0]));
+    var ini = fi.anon ? '?' : initials(fi.name);
+    var color = fi.anon ? '#9DB2C2' : AVPAL[hashName(fi.name) % AVPAL.length];
+    var el = document.createElement('div');
+    el.className = 'imp';
+    el.innerHTML = (multi ? crownSvg : '') +
+      '<div class="av" style="background:' + color + '">' + escapeHtml(ini) + '</div>' +
+      '<div style="min-width:0;"><div class="nm">' + escapeHtml(fi.name) + '</div><div class="meta">' + meta + '</div></div>';
+    grid.appendChild(el);
+  }
+}
+
+function deacc(s){
+  try { return s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  catch (e) { return s; }
+}
+
+function parseCSV(text){
+  var rows = [], row = [], field = '', inq = false, c;
+  for (var i = 0; i < text.length; i++){
+    c = text.charAt(i);
+    if (inq){
+      if (c === '"'){
+        if (text.charAt(i+1) === '"'){ field += '"'; i++; }
+        else inq = false;
+      } else field += c;
+    } else {
+      if (c === '"') inq = true;
+      else if (c === ','){ row.push(field); field = ''; }
+      else if (c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r'){ /* nada */ }
+      else field += c;
+    }
+  }
+  if (field.length > 0 || row.length > 0){ row.push(field); rows.push(row); }
+  return rows;
+}
+
+function loadSheet(){
+  if (!CONFIG.sheetCsvUrl || typeof fetch !== 'function') return;
+  fetch(CONFIG.sheetCsvUrl, { cache: 'no-store' })
+    .then(function(r){ return r.text(); })
+    .then(function(text){
+      var rows = parseCSV(text);
+      if (!rows.length) return;
+      var head = [];
+      for (var x = 0; x < rows[0].length; x++){ head.push(deacc((rows[0][x] || '').trim().toLowerCase())); }
+      var iNum = head.indexOf('numero');
+      var iEst = head.indexOf('estado');
+      var iCom = head.indexOf('comprador');
+      var start = 1;
+      if (iNum === -1){ iNum = 0; iEst = 1; iCom = 2; start = 0; } // sin encabezado
+      var stateMap = {};
+      for (var z = 0; z < 100; z++){ stateMap[z] = 'disponible'; }
+      var ventas = [];
+      for (var r = start; r < rows.length; r++){
+        var cells = rows[r];
+        if (!cells || !cells.length) continue;
+        var numRaw = (cells[iNum] || '').trim();
+        if (numRaw === '') continue;
+        var num = parseInt(numRaw, 10);
+        if (isNaN(num) || num < 0 || num > 99) continue;
+        var est = normEstado(iEst > -1 ? cells[iEst] : '');
+        stateMap[num] = est;
+        if (est === 'vendido'){
+          var comp = iCom > -1 ? (cells[iCom] || '').trim() : '';
+          ventas.push({ num: num, comprador: comp });
+        }
+      }
+      buildBoard(stateMap);
+      buildMuro(ventas);
+    })
+    .catch(function(e){ /* si falla, queda el respaldo ya pintado */ });
+}
+
+function startCountdown(){
+  var target = new Date(CONFIG.sorteo).getTime();
+  var d = document.getElementById('cd-d');
+  var h = document.getElementById('cd-h');
+  var m = document.getElementById('cd-m');
+  var s = document.getElementById('cd-s');
+  var box = document.getElementById('count');
+  if (!d || isNaN(target)) return;
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function render(){
+    var diff = target - Date.now();
+    if (diff <= 0){
+      if (box) box.innerHTML = '<div class="clbl">El sorteo</div><div class="date" style="margin-top:8px;font-size:18px;">El sorteo ya se hizo. Pronto comparto el resultado.</div>';
+      clearInterval(iv);
+      return;
+    }
+    d.textContent = Math.floor(diff / 86400000);
+    h.textContent = pad(Math.floor(diff % 86400000 / 3600000));
+    m.textContent = pad(Math.floor(diff % 3600000 / 60000));
+    s.textContent = pad(Math.floor(diff % 60000 / 1000));
+  }
+  render();
+  var iv = setInterval(render, 1000);
+}
+
+function initPayShare(){
+  var n = document.getElementById('pay-nequi');
+  var t = document.getElementById('pay-titular');
+  var btn = document.getElementById('share-btn');
+  if (n) n.textContent = CONFIG.nequi;
+  if (t) t.textContent = CONFIG.titular;
+  if (btn){
+    var url = CONFIG.siteUrl || window.location.href;
+    var shareText = 'Te invito a sumarte a la meta de Gabriel: su primera computadora. Eliges un numero de $30.000 y entras al sorteo de $500.000 y $300.000 por la Loteria de Boyaca. Mira y elige tu numero: ' + url;
+    btn.href = 'https://wa.me/?text=' + encodeURIComponent(shareText);
+  }
+}
+
+function initRifa(){
+  try {
+    var fb = {};
+    for (var i = 0; i < 100; i++){ fb[i] = 'disponible'; }
+    var v = CONFIG.vendidos || [];
+    for (var j = 0; j < v.length; j++){ fb[v[j]] = 'vendido'; }
+    buildBoard(fb);
+    if (!CONFIG.sheetCsvUrl){ buildMuro([]); }
+  } catch (e) {}
+  try { startCountdown(); } catch (e) {}
+  try { initPayShare(); } catch (e) {}
+  try { loadSheet(); } catch (e) {}
+}
+
+if (document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initRifa);
+} else {
+  initRifa();
+}
+</script>
+</body>
+</html>
